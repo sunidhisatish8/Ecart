@@ -1,9 +1,20 @@
 package com.example.myshop.data
 
+import com.google.gson.annotations.SerializedName
+
 data class Subcategory(
-    val category_id: String,
-    val is_active: String,
-    val subcategory_id: String,
-    val subcategory_image_url: String,
-    val subcategory_name: String
+    @SerializedName("category_id")
+    val categoryId: String,
+
+    @SerializedName("is_active")
+    val isActive: String,
+
+    @SerializedName("subcategory_id")
+    val subcategoryId: String,
+
+    @SerializedName("subcategory_image_url")
+    val subcategoryImageUrl: String,
+
+    @SerializedName("subcategory_name")
+    val subcategoryName: String
 )

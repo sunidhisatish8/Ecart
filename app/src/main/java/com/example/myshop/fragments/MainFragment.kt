@@ -52,13 +52,14 @@ class MainFragment : Fragment() {
 
                 val result: SubCategoriesResponse? = response.body()
                 if (result != null && result.subcategories.isNotEmpty()) {
+                    subcategoryList.clear()
                     subcategoryList.addAll(result.subcategories)
                     val adapter =
                         SubcategoryPagerAdapter(subcategoryList, childFragmentManager, lifecycle)
                     binding.viewPager.adapter = adapter
 
                     TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-                        tab.text = subcategoryList[position].subcategory_name
+                        tab.text = subcategoryList[position].subcategoryName
                     }.attach()
                 }
             }

@@ -20,7 +20,7 @@ class ProductPagerAdapter(
         val product = productList[position]
         val bundle = Bundle()
         bundle.apply {
-            putString("productId", product.product_id)
+            putString("productId", product.productId)
         }
         productFragment.arguments = bundle
         return productFragment

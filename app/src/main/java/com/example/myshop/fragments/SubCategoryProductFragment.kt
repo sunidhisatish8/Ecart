@@ -19,6 +19,7 @@ import com.example.myshop.data.SubCategoryProductResponse
 import com.example.myshop.databinding.FragmentSubCategoryProductBinding
 import com.example.myshop.remote.ApiClient
 import com.example.myshop.remote.ApiService
+import com.example.myshop.viewModel.CartViewModel
 import com.example.myshop.viewModel.ProductViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,6 +29,7 @@ class SubCategoryProductFragment : Fragment() {
     private lateinit var binding: FragmentSubCategoryProductBinding
     private lateinit var productViewModel: ProductViewModel
     private val productList = ArrayList<Product>()
+    private lateinit var cartViewModel: CartViewModel
     private lateinit var adapter: ProductRecyclerAdapter
 
     companion object {
@@ -50,11 +52,16 @@ class SubCategoryProductFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        cartViewModel = ViewModelProvider(requireActivity())[CartViewModel::class.java]
         setUpRecyclerView()
-        if(IS_SEARCH_CLICKED){
+        if (IS_SEARCH_CLICKED) {
             getSearchProducts()
         } else {
             getSubCategoryProductFragment()
+        }
+
+        binding.viewCartButton.setOnClickListener {
+            navigateToCartFragment()
         }
     }
 
@@ -68,7 +75,6 @@ class SubCategoryProductFragment : Fragment() {
             response?.let {
                 productList.clear()
                 productList.addAll(it.products)
-                Log.d("ProductList", "Number of products: ${productList.size}")
                 adapter.notifyDataSetChanged()
             }
         }
@@ -82,7 +88,6 @@ class SubCategoryProductFragment : Fragment() {
             response?.let {
                 productList.clear()
                 productList.addAll(it.products)
-                Log.d("ProductList", "Number of products: ${productList.size}")
                 adapter.notifyDataSetChanged()
             }
         }
@@ -90,7 +95,14 @@ class SubCategoryProductFragment : Fragment() {
 
     private fun setUpRecyclerView() {
         binding.productRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        adapter = ProductRecyclerAdapter(productList)
+        adapter = ProductRecyclerAdapter(productList, cartViewModel)
         binding.productRecyclerView.adapter = adapter
+    }
+
+    private fun navigateToCartFragment() {
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.fragment_container, CartFragment())
+            ?.addToBackStack(null)
+            ?.commit()
     }
 }

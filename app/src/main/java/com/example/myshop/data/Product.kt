@@ -1,14 +1,24 @@
 package com.example.myshop.data
 
+import com.google.gson.annotations.SerializedName
+
 data class Product(
-    val average_rating: String,
-    val category_id: String,
-    val category_name: String,
+    @SerializedName("average_rating")
+    val averageRating: String,
+    @SerializedName("category_id")
+    val categoryId: String,
+    @SerializedName("category_name")
+    val categoryName: String,
     val description: String,
     val price: String,
-    val product_id: String,
-    val product_image_url: String,
-    val product_name: String,
-    val sub_category_id: String,
-    val subcategory_name: String
+    @SerializedName("product_id")
+    val productId: String,
+    @SerializedName("product_image_url")
+    val productImageUrl: String,
+    @SerializedName("product_name")
+    val productName: String,
+    @SerializedName("sub_category_id")
+    val subCategoryId: String,
+    @SerializedName("subcategory_name")
+    val subcategoryName: String
 )
