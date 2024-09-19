@@ -8,8 +8,11 @@ import androidx.security.crypto.MasterKey
 object SharedPreferences {
     private const val PREF_FILE_NAME = "pref_of_app"
     const val KEY_EMAIL = "email"
+    const val KEY_USER_ID = "userId"
     const val KEY_PASSWORD = "password"
     const val KEY_IS_LOGIN = "isLogin"
+    const val KEY_IS_NEXT = "isNext"
+    const val KEY_IS_ONBOARD = "isOnboard"
 
     private lateinit var sharedPreferences: SharedPreferences
     fun init(context: Context) {
@@ -35,7 +38,7 @@ object SharedPreferences {
     }
 
     fun saveBoolean(key: String, value: Boolean) {
-        sharedPreferences.edit().putBoolean(key, value)
+        sharedPreferences.edit().putBoolean(key, value).apply()
     }
 
     fun getBoolean(key: String, value: Boolean): Boolean {

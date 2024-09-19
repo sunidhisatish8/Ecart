@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myshop.Constants.SUBCATEGORY_ID
-import com.example.myshop.data.Product
-import com.example.myshop.data.SearchProductResponse
-import com.example.myshop.data.SubCategoryProductResponse
-import com.example.myshop.remote.ApiClient
-import com.example.myshop.remote.ApiService
+import com.example.myshop.model.data.Product
+import com.example.myshop.model.data.SearchProductResponse
+import com.example.myshop.model.data.SubCategoryProductResponse
+import com.example.myshop.model.remote.ApiClient
+import com.example.myshop.model.remote.ApiService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -46,10 +46,9 @@ class ProductViewModel: ViewModel() {
 
     fun searchProducts(searchText:String){
         apiService = ApiClient.myShopRetrofit.create(ApiService::class.java)
-        val call: Call<SearchProductResponse>? = searchText?.let {
-            apiService.getSearchedProducts(it)
-        }
-        call?.enqueue(object : Callback<SearchProductResponse> {
+        val call: Call<SearchProductResponse> = apiService.getSearchedProducts(searchText)
+
+        call.enqueue(object : Callback<SearchProductResponse> {
             override fun onResponse(
                 call: Call<SearchProductResponse>,
                 response: Response<SearchProductResponse>

@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myshop.Constants.IMAGE_BASE_URL
 import com.example.myshop.R
-import com.example.myshop.data.Product
+import com.example.myshop.model.data.Product
 import com.example.myshop.databinding.ItemProductBinding
 import com.example.myshop.fragments.CartFragment
 import com.example.myshop.viewModel.CartViewModel
@@ -18,7 +18,6 @@ class ProductRecyclerAdapter(
     private val cartViewModel: CartViewModel,
 ) :
     RecyclerView.Adapter<ProductRecyclerAdapter.ViewHolder>() {
-
     private lateinit var binding: ItemProductBinding
 
     inner class ViewHolder(private val binding: ItemProductBinding) :
@@ -33,6 +32,12 @@ class ProductRecyclerAdapter(
                 productName.text = product.productName
                 productPrice.text = "$ ${product.price}"
                 productRating.rating = product.averageRating.toFloat()
+                clickListener(binding, product)
+            }
+        }
+
+        private fun clickListener(binding: ItemProductBinding, product: Product) {
+            binding.apply {
                 cartViewModel.cartData.observeForever { cartItems ->
                     val cartItem = cartItems.find { it.name == product.productName }
                     if (cartItem != null) {

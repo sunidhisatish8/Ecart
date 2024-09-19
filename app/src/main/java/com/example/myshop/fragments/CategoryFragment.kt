@@ -6,13 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.myshop.Constants.CATEGORY_ID
 import com.example.myshop.adapter.CategoryAdapter
 import com.example.myshop.R
-import com.example.myshop.data.Category
-import com.example.myshop.data.CategoryResponse
+import com.example.myshop.model.data.Category
+import com.example.myshop.model.data.CategoryResponse
 import com.example.myshop.databinding.FragmentCategoryBinding
-import com.example.myshop.remote.ApiClient
-import com.example.myshop.remote.ApiService
+import com.example.myshop.model.remote.ApiClient
+import com.example.myshop.model.remote.ApiService
 import com.example.myshop.showMessage
 import retrofit2.Call
 import retrofit2.Callback
@@ -74,7 +75,7 @@ class CategoryFragment : Fragment() {
     private fun onCategoryClick(category: Category) {
         val mainFragment = MainFragment().apply {
             arguments = Bundle().apply {
-                putString("categoryId", category.categoryId)
+                putString(CATEGORY_ID, category.categoryId)
             }
         }
         activity?.supportFragmentManager?.beginTransaction()

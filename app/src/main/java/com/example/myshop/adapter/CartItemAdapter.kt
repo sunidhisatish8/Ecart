@@ -3,10 +3,10 @@ package com.example.myshop.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myshop.data.CartItems
+import com.example.myshop.model.data.CartItems
 import com.example.myshop.databinding.ItemCartBinding
 
-class CartItemAdapter() :
+class CartItemAdapter :
     RecyclerView.Adapter<CartItemAdapter.ViewHolder>() {
     private val cartList = mutableListOf<CartItems>()
 
@@ -14,7 +14,7 @@ class CartItemAdapter() :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(cartItem: CartItems) {
             binding.productName.text = cartItem.name
-            binding.productQuantity.text = "Quantity: ${cartItem.quantity}"
+            binding.quantityValue.text = cartItem.quantity.toString()
             binding.productPrice.text = "$ ${cartItem.price * cartItem.quantity}"
         }
     }

@@ -6,11 +6,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.myshop.data.LoginRequest
-import com.example.myshop.data.LoginResponse
+import com.example.myshop.model.data.LoginRequest
+import com.example.myshop.model.data.LoginResponse
 import com.example.myshop.databinding.ActivityMainBinding
-import com.example.myshop.remote.ApiClient
-import com.example.myshop.remote.ApiService
+import com.example.myshop.model.remote.ApiClient
+import com.example.myshop.model.remote.ApiService
 import com.example.myshop.security.SharedPreferences
 import retrofit2.Call
 import retrofit2.Callback
@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         val login = LoginRequest(emailID, password)
         SharedPreferences.saveString(SharedPreferences.KEY_EMAIL, emailID)
         SharedPreferences.saveString(SharedPreferences.KEY_PASSWORD, password)
+        SharedPreferences.saveBoolean(SharedPreferences.KEY_IS_LOGIN, true)
 
         val call: Call<LoginResponse> = apiService.addLoginDetails(login)
         call.enqueue(object : Callback<LoginResponse> {
@@ -68,6 +69,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 if (result?.status == 0) {
                     showMessage("Successful", "Logged in Successfully")
+                    SharedPreferences.saveString(SharedPreferences.KEY_USER_ID, result.user.userId)
                     SharedPreferences.saveBoolean(SharedPreferences.KEY_IS_LOGIN, true)
                     navigateToDashboard()
                 } else {
@@ -86,6 +88,7 @@ class MainActivity : AppCompatActivity() {
     fun navigateToDashboard() {
         val intent = Intent(this@MainActivity, DashboardActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
 }

@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.myshop.data.Product
+import com.example.myshop.model.data.Product
 import com.example.myshop.fragments.SubCategoryProductFragment
 
 class ProductPagerAdapter(

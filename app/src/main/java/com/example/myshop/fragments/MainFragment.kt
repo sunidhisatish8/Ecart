@@ -5,12 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.myshop.Constants.CATEGORY_ID
 import com.example.myshop.adapter.SubcategoryPagerAdapter
-import com.example.myshop.data.Subcategory
-import com.example.myshop.data.SubCategoriesResponse
+import com.example.myshop.model.data.Subcategory
+import com.example.myshop.model.data.SubCategoriesResponse
 import com.example.myshop.databinding.FragmentMainBinding
-import com.example.myshop.remote.ApiClient
-import com.example.myshop.remote.ApiService
+import com.example.myshop.model.remote.ApiClient
+import com.example.myshop.model.remote.ApiService
 import com.example.myshop.showMessage
 import com.google.android.material.tabs.TabLayoutMediator
 import retrofit2.Call
@@ -32,9 +33,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val categoryId = arguments?.getString("categoryId")
-
+        val categoryId = arguments?.getString(CATEGORY_ID)
         apiService = ApiClient.myShopRetrofit.create(ApiService::class.java)
         val call: Call<SubCategoriesResponse>? = categoryId?.let {
             apiService.getSubCategoryDetails(

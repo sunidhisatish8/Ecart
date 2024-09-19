@@ -1,14 +1,20 @@
 package com.example.myshop.viewModel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.example.myshop.data.CartItems
-import com.example.myshop.data.Product
+import com.example.myshop.model.data.CartItems
+import com.example.myshop.model.data.Product
+import com.example.myshop.model.remote.AppDatabase
 
-class CartViewModel : ViewModel() {
+class CartViewModel(application: Application) : AndroidViewModel(application)  {
+    private val cartDao = AppDatabase.getInstance(application).cartDao()
     private var _cartData = MutableLiveData<MutableList<CartItems>>()
     val cartData: LiveData<MutableList<CartItems>> = _cartData
+    private var _orderTotal = MutableLiveData<Int>()
+    val orderTotal: LiveData<Int> = _orderTotal
+
 
     fun addToCart(product: Product) {
         val currentCartItems = _cartData.value ?: mutableListOf()
@@ -28,6 +34,7 @@ class CartViewModel : ViewModel() {
         }
 
         _cartData.value = currentCartItems
+        cartDao.saveCartDetails(currentCartItems)
     }
 
     fun increaseQuantity(product: Product) {
@@ -38,6 +45,7 @@ class CartViewModel : ViewModel() {
             it.quantity += 1
             _cartData.value = currentCartItems
         }
+        cartDao.updateCartDetails(currentCartItems)
     }
 
     fun decreaseQuantity(product: Product) {
@@ -53,5 +61,11 @@ class CartViewModel : ViewModel() {
                 _cartData.value = currentCartItems
             }
         }
+        cartDao.updateCartDetails(currentCartItems)
+    }
+
+    fun setTotalPrice() {
+        val currentCartItems = _cartData.value ?: mutableListOf()
+        _orderTotal.value = currentCartItems.sumOf { it.price * it.quantity }.toInt()
     }
 }

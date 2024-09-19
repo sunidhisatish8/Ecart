@@ -1,5 +1,6 @@
 package com.example.myshop.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,13 +13,14 @@ import com.example.myshop.Constants.IS_SEARCH_CLICKED
 import com.example.myshop.Constants.SEARCH_TEXT
 import com.example.myshop.Constants.SUBCATEGORY_ID
 import com.example.myshop.R
+import com.example.myshop.SubCategoryIdProvider
 import com.example.myshop.adapter.ProductPagerAdapter
 import com.example.myshop.adapter.ProductRecyclerAdapter
-import com.example.myshop.data.Product
-import com.example.myshop.data.SubCategoryProductResponse
+import com.example.myshop.model.data.Product
+import com.example.myshop.model.data.SubCategoryProductResponse
 import com.example.myshop.databinding.FragmentSubCategoryProductBinding
-import com.example.myshop.remote.ApiClient
-import com.example.myshop.remote.ApiService
+import com.example.myshop.model.remote.ApiClient
+import com.example.myshop.model.remote.ApiService
 import com.example.myshop.viewModel.CartViewModel
 import com.example.myshop.viewModel.ProductViewModel
 import retrofit2.Call
@@ -101,7 +103,7 @@ class SubCategoryProductFragment : Fragment() {
 
     private fun navigateToCartFragment() {
         activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.fragment_container, CartFragment())
+            ?.replace(R.id.fragment_container, CheckoutFragment())
             ?.addToBackStack(null)
             ?.commit()
     }

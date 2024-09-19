@@ -16,7 +16,7 @@
         android:theme="@style/Theme.MyShop"
         tools:targetApi="31">
         <activity
-            android:name=".fragments.Category_Fragment_Activity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".DashboardActivity"
@@ -25,7 +25,7 @@
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".OnBoardingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -31,6 +31,8 @@ class CartFragment : Fragment() {
         setUpRecyclerView()
         cartViewModel.cartData.observe(viewLifecycleOwner) { cartItems ->
             cartAdapter.updateCartItems(cartItems)
+            cartViewModel.setTotalPrice()
+            binding.totalPrice.text = cartViewModel.orderTotal.value.toString()
         }
     }
 

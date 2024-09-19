@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myshop.Constants.IMAGE_BASE_URL
-import com.example.myshop.data.Category
+import com.example.myshop.model.data.Category
 import com.example.myshop.databinding.ItemCategoryBinding
 import com.squareup.picasso.Picasso
 
@@ -18,11 +18,8 @@ class CategoryAdapter(
 
         fun bind(category: Category) {
             binding.categoryName.text = category.categoryName
-//            Glide.with(binding.root.context)
-//                .load(  BASE_URL+category.categoryImageUrl)
-//                .into(binding.categoryImage)
             Picasso.get()
-                .load(IMAGE_BASE_URL+category.categoryImageUrl)
+                .load(IMAGE_BASE_URL + category.categoryImageUrl)
                 .into(binding.categoryImage)
             binding.root.setOnClickListener { onClick(category) }
         }

@@ -1,24 +1,33 @@
 package com.example.myshop
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.SearchView
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
 import androidx.transition.Visibility
 import com.example.myshop.Constants.IS_SEARCH_CLICKED
 import com.example.myshop.Constants.MY_SHOP
+import com.example.myshop.Constants.PREF_FILE_NAME
 import com.example.myshop.Constants.SEARCH_TEXT
 import com.example.myshop.databinding.ActivityDashboardBinding
 import com.example.myshop.databinding.ActivityMainBinding
+import com.example.myshop.fragments.AddressFragment
+import com.example.myshop.fragments.CartFragment
 import com.example.myshop.fragments.CategoryFragment
 import com.example.myshop.fragments.SubCategoryProductFragment
-import com.example.myshop.remote.ApiClient
-import com.example.myshop.remote.ApiService
+import com.example.myshop.fragments.SummaryFragment
+import com.example.myshop.model.remote.ApiClient
+import com.example.myshop.model.remote.ApiService
+import com.example.myshop.security.SharedPreferences
 
 class DashboardActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashboardBinding
@@ -28,6 +37,7 @@ class DashboardActivity : AppCompatActivity() {
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
+        setUserDetails()
         setToolbar()
         initViews()
         binding.btnSearchTool.setOnClickListener {
@@ -35,6 +45,13 @@ class DashboardActivity : AppCompatActivity() {
             binding.searchButton.visibility = View.VISIBLE
             searchProduct()
         }
+    }
+
+    private fun setUserDetails() {
+        val headerView = binding.navView.getHeaderView(0)
+        val emailIdTextView = headerView.findViewById<TextView>(R.id.emailId)
+        val emailId = SharedPreferences.getString(SharedPreferences.KEY_EMAIL, "example@email.com")
+        emailIdTextView.text = "Hi, $emailId"
     }
 
     private fun searchProduct() {
@@ -49,7 +66,7 @@ class DashboardActivity : AppCompatActivity() {
                 }
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, subCategoryFragment)
-                    .addToBackStack("SubCategoryProductFragment")
+                    .addToBackStack(null)
                     .commit()
             }
         }
@@ -64,18 +81,58 @@ class DashboardActivity : AppCompatActivity() {
         }
         binding.navView.setNavigationItemSelectedListener { menuItems ->
             menuItems.isChecked = true
+
             when (menuItems.itemId) {
-                R.id.home -> showMessage("Home", "Selected")
+                R.id.home -> {
+                    replaceFragment(CategoryFragment())
+                }
+                R.id.cart -> {
+                    replaceFragment(CartFragment())
+                }
+                R.id.orders -> {
+                    replaceFragment(SummaryFragment())
+                }
+                R.id.address -> {
+                    replaceFragment(AddressFragment())
+                }
+                R.id.logout -> {
+                    showLogoutConfirmationDialog()
+                }
+                else -> {
+                    replaceFragment(CategoryFragment())
+                }
             }
+
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
     }
+    private fun showLogoutConfirmationDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Confirm Logout")
+            .setMessage("Are you sure you want to logout?")
+            .setPositiveButton("Yes") { dialog, _ ->
+                logout()
+                dialog.dismiss()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
 
-    private fun initViews() {
-        val fragment = CategoryFragment()
+    private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
-            .addToBackStack("CategoryFragment")
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun initViews() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, CategoryFragment())
+            .addToBackStack(null)
             .commit()
     }
 
@@ -90,4 +147,16 @@ class DashboardActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun logout() {
+        val sharedPreferences = getSharedPreferences(PREF_FILE_NAME, MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            clear()
+            apply()
+        }
+        SharedPreferences.saveBoolean(SharedPreferences.KEY_IS_ONBOARD, true)
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+    }
 }

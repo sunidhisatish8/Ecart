@@ -34,7 +34,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:text="One Plus 9 Pro"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -62,7 +61,6 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp"
-            android:text="Product Description"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -74,7 +72,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="$ 200"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +86,6 @@
             android:layout_marginBottom="10dp"
             android:background="#49A5EF"
             android:padding="20dp"
-
             android:text="@string/add_to_cart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -123,7 +119,7 @@
                 android:layout_marginEnd="16dp"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="1"
+                android:text="@string/_1"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 
@@ -136,9 +132,6 @@
                 android:text="@string/plus"
                 android:background="#49A5EF"
                 android:textColor="@android:color/black" />
-
         </LinearLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.cardview.widget.CardView>
